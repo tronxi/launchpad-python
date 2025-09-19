@@ -35,3 +35,15 @@ class App:
 
     def _run_app(self):
         subprocess.run(["open", self.path])
+
+
+    def __eq__(self, other):
+        if not isinstance(other, App):
+            return NotImplemented
+        return self.path == other.path
+
+    def __hash__(self):
+        return hash(self.path)
+
+    def __repr__(self):
+        return f"App(name={self.name!r}, path={self.path!r})"
