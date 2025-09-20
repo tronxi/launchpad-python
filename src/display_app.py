@@ -40,7 +40,7 @@ class DisplayApp:
         self._dialog.resize(520, 400)
         self._dialog.setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
         self._dialog.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self._dialog.setStyleSheet("background-color: rgb(16, 87, 194);")
+        self._dialog.setStyleSheet("background-color: rgb(10, 33, 48);")
 
         scroll = QScrollArea(self._dialog)
         scroll.setWidgetResizable(True)

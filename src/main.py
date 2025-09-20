@@ -31,7 +31,7 @@ class Main(QScrollArea):
         self.setStyleSheet("""
         QScrollArea {
             border: none;
-            background-color: rgb(10, 64, 138);
+            background-color: rgb(17, 49, 70);
         }
         QScrollArea > QWidget {
             background: transparent;
