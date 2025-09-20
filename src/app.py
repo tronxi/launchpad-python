@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QFileIconProvider
 
 class App:
     def __init__(self, name, path):
+        self.id = None
         self.name = name
         self.path = path
         self._provider = QFileIconProvider()
@@ -32,6 +33,9 @@ class App:
         icon.setCursor(Qt.CursorShape.PointingHandCursor)
         icon.mouseReleaseEvent = lambda _: self._run_app()
         return icon
+
+    def get_icon_image(self):
+        return self._provider.icon(QFileInfo(self.path))
 
     def _run_app(self):
         subprocess.run(["open", self.path])

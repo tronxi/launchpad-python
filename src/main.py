@@ -31,7 +31,7 @@ class Main(QScrollArea):
         self.setStyleSheet("""
         QScrollArea {
             border: none;
-            background-color: rgb(16, 87, 194);
+            background-color: rgb(10, 64, 138);
         }
         QScrollArea > QWidget {
             background: transparent;
@@ -44,9 +44,9 @@ class Main(QScrollArea):
         frm = QGridLayout(inner)
         frm.setContentsMargins(12, 12, 12, 12)
         frm.setHorizontalSpacing(12)
-        frm.setVerticalSpacing(8)
+        frm.setVerticalSpacing(12)
         cols = 6
-        for i, app in enumerate(self._searcher.get_apps()):
+        for i, app in enumerate(self._searcher.get_display_apps()):
             r, c = divmod(i, cols)
             icon = app.draw()
 
