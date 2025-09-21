@@ -71,8 +71,25 @@ class SettingsDialog(QDialog):
         searcher = AppSearcher()
         searcher.search()
         self.apps_list.clear()
+
+        try:
+            with open(self.json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            data = {}
+
+        app_to_folder = {}
+        for folder, apps in data.items():
+            for app in apps:
+                if not app.endswith(".app"):
+                    app_name = app + ".app"
+                else:
+                    app_name = app
+                app_to_folder[app_name] = folder
+
         for app in sorted(searcher.get_apps(), key=lambda a: a.name.lower()):
-            item = QListWidgetItem(app.name[:-4])
+            folder_name = app_to_folder.get(app.name, "—")
+            item = QListWidgetItem(f"{app.name[:-4]}   [{folder_name}]")
             self.apps_list.addItem(item)
 
     def save_json(self):
