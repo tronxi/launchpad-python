@@ -37,8 +37,6 @@ class AppSearcher:
                             app.id = id
                             id = self._add_display_app("", self._retrieve_latest_position() + 1)
                             self._link_app_to_display(id, app.id)
-                        else:
-                            app = database_apps[database_apps.index(app)]
                 dirnames[:] = [dn for dn in dirnames if not dn.endswith(".app")]
         for app in database_apps:
             if app not in file_apps:
@@ -117,7 +115,7 @@ class AppSearcher:
                                             from app a
                                                      join display_app_app da on a.id = da.app_id
                                             where da.display_app_id = ?
-                                            order by a.name
+                                            order by lower(a.name)
                                             """, (display_id,)):
                     app = App(app_row[1], app_row[2])
                     app.id = app_row[0]
