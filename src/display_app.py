@@ -11,7 +11,7 @@ class DisplayApp:
 
     def draw(self):
         if len(self.app_list) == 1:
-            return self.app_list[0].draw()
+            return self.app_list[0].draw(display_name=self.name)
         else:
             icon = QWidget()
             icon_pixmap =  self._compose_icon_pixmap()
@@ -37,7 +37,7 @@ class DisplayApp:
     def _open_popup(self):
         self._dialog = QDialog()
         self._dialog.setWindowTitle(self.name)
-        self._dialog.resize(520, 400)
+        self._dialog.resize(1040, 800)
         self._dialog.setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
         self._dialog.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self._dialog.setStyleSheet("background-color: rgb(10, 33, 48);")
@@ -50,9 +50,9 @@ class DisplayApp:
         grid = QGridLayout(container)
         grid.setContentsMargins(12, 12, 12, 12)
         grid.setHorizontalSpacing(12)
-        grid.setVerticalSpacing(12)
+        grid.setVerticalSpacing(50)
 
-        cols = 4
+        cols = 8
         for i, app in enumerate(self.app_list):
             r, c = divmod(i, cols)
             grid.addWidget(app.draw(), r, c)
@@ -61,6 +61,8 @@ class DisplayApp:
 
         layout = QVBoxLayout(self._dialog)
         layout.addWidget(scroll)
+
+        grid.setRowStretch(grid.rowCount(), 1)
 
         self._dialog.show()
 

@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from src.app import App
+from app import App
 import os
 import sqlite3
 
-from src.display_app import DisplayApp
+from display_app import DisplayApp
 
 
 class AppSearcher:

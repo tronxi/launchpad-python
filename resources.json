@@ -1,0 +1,40 @@
+{
+  "Ajustes": ["System Settings"],
+  "Chrome": ["Google Chrome"],
+  "Whatsapp": ["WhatsApp"],
+  "Apps": [],
+  "games": [
+    "ares",
+    "Azahar",
+    "Ryujinx"
+  ],
+  "Tools": [
+    "Arduino IDE",
+    "VLC",
+    "Gas Mask",
+    "Papaya",
+    "Xcode",
+    "Windows App",
+    "Google Drive",
+    "UTM",
+    "Android Studio",
+    "Fritzing",
+    "Raspberry Pi Imager",
+    "The Unarchiver",
+    "AppCleaner",
+    "Postman",
+    "JetBrains Toolbox",
+    "Activity Monitor",
+    "CLion"
+  ],
+  "iTerm": ["iTerm"],
+  "IntelliJ IDEA": ["IntelliJ IDEA Ultimate"],
+  "Visual Studio Code": ["Visual Studio Code"],
+  "Docker": ["Docker"],
+  "Bruno": ["Bruno"],
+  "DBeaver": ["DBeaver"],
+  "3D": [
+    "ElegooSlicer",
+    "Autodesk Fusion"
+  ]
+}

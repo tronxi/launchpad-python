@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 from PyQt6.QtCore import Qt
-from src.app_searcher import AppSearcher
+from app_searcher import AppSearcher
 from AppKit import NSWorkspace, NSScreen
 
 def get_main_wallpaper_path():
@@ -44,14 +44,14 @@ class Main(QScrollArea):
         frm = QGridLayout(inner)
         frm.setContentsMargins(12, 12, 12, 12)
         frm.setHorizontalSpacing(12)
-        frm.setVerticalSpacing(12)
+        frm.setVerticalSpacing(50)
         cols = 6
         for i, app in enumerate(self._searcher.get_display_apps()):
             r, c = divmod(i, cols)
             icon = app.draw()
 
             frm.addWidget(icon, r, c, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-
+        frm.setRowStretch(frm.rowCount(), 1)
         self.setWidget(inner)
 
 
