@@ -1,6 +1,5 @@
 import sys
 
-from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLineEdit, QPushButton, QDialog
 from PyQt6.QtCore import Qt
 from app_searcher import AppSearcher
@@ -128,14 +127,12 @@ class Main(QScrollArea):
 
     def _open_settings(self):
         dialog = SettingsDialog(self, on_close=self._refresh_apps)
-        dialog.setWindowIcon(
-            QIcon("assets/icons/settings.svg")
-        )
         dialog.exec()
 
     def _refresh_apps(self):
         self.search_bar.setText("")
         self._on_search_changed("")
+        self.search_bar.setFocus()
 
 if __name__ == "__main__":
     application = QApplication(sys.argv)
