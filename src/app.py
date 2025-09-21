@@ -13,14 +13,14 @@ class App:
 
     def draw(self, display_name=None):
         icon = QWidget()
-        icon.setFixedSize(100, 120)
+        icon.setFixedSize(120, 140)
         icon_layout = QVBoxLayout(icon)
         icon_layout.setContentsMargins(0, 0, 0, 0)
         icon_layout.setSpacing(6)
         icon_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
         icon_image = self._provider.icon(QFileInfo(self.path))
-        icon_pixmap = icon_image.pixmap(80, 80)
+        icon_pixmap = icon_image.pixmap(100, 100)
         icon_lbl = QLabel()
         icon_lbl.setPixmap(icon_pixmap)
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter)

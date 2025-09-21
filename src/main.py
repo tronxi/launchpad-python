@@ -58,7 +58,7 @@ class Main(QScrollArea):
                       alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignVCenter)
         self.frm.setContentsMargins(12, 12, 12, 12)
         self.frm.setHorizontalSpacing(12)
-        self.frm.setVerticalSpacing(50)
+        self.frm.setVerticalSpacing(25)
         self._populate_apps(self._searcher.get_display_apps())
         self.frm.setRowStretch(self.frm.rowCount(), 1)
         self.setWidget(inner)
