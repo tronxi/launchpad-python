@@ -29,7 +29,7 @@ class App:
         name_lbl = QLabel(text)
         name_lbl.setWordWrap(True)
         name_lbl.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        name_lbl.setFixedWidth(90)
+        name_lbl.setFixedWidth(100)
 
         icon_layout.addWidget(icon_lbl)
         icon_layout.addWidget(name_lbl)
