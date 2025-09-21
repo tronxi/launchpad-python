@@ -1,8 +1,9 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLineEdit
 from PyQt6.QtCore import Qt
 from app_searcher import AppSearcher
 from AppKit import NSWorkspace, NSScreen
+
 
 def get_main_wallpaper_path():
     screen = NSScreen.mainScreen()
@@ -36,23 +37,68 @@ class Main(QScrollArea):
         QScrollArea > QWidget {
             background: transparent;
         }
+        QLineEdit {
+            padding: 8px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
         """)
 
     def _build_ui(self):
         inner = QWidget()
         inner.setStyleSheet("background: transparent;")
-        frm = QGridLayout(inner)
-        frm.setContentsMargins(12, 12, 12, 12)
-        frm.setHorizontalSpacing(12)
-        frm.setVerticalSpacing(50)
+        self.frm = QGridLayout(inner)
+        self.search_bar = QLineEdit()
+        self.search_bar.textChanged.connect(self._on_search_changed)
+        self.search_bar.setPlaceholderText("Buscar aplicaciones...")
+        self.search_bar.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.search_bar.setFocus()
+        self.frm.addWidget(self.search_bar, 0, 0, 1, 6,
+                      alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.frm.setContentsMargins(12, 12, 12, 12)
+        self.frm.setHorizontalSpacing(12)
+        self.frm.setVerticalSpacing(50)
+        self._populate_apps(self._searcher.get_display_apps())
+        self.frm.setRowStretch(self.frm.rowCount(), 1)
+        self.setWidget(inner)
+
+    def _populate_apps(self, apps):
+        for i in reversed(range(self.frm.count())):
+            item = self.frm.itemAt(i)
+            if item:
+                w = item.widget()
+                if w and not isinstance(w, QLineEdit):
+                    w.setParent(None)
         cols = 6
-        for i, app in enumerate(self._searcher.get_display_apps()):
+        for i, app in enumerate(apps):
             r, c = divmod(i, cols)
             icon = app.draw()
 
-            frm.addWidget(icon, r, c, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-        frm.setRowStretch(frm.rowCount(), 1)
-        self.setWidget(inner)
+            self.frm.addWidget(icon, r + 1, c, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+
+    def _on_search_changed(self, text: str):
+        text = text.strip().lower()
+        if not text:
+            self._populate_apps(self._searcher.get_display_apps())
+        else:
+            apps = []
+            for app in self._searcher.get_apps():
+                app_name = app.name.lower().removesuffix(".app")
+                if text in app_name:
+                    apps.append(app)
+            self._populate_apps(apps)
+
+    def mousePressEvent(self, event):
+        self.search_bar.setFocus()
+        super().mousePressEvent(event)
+
+
+    def changeEvent(self, event):
+        if event.type() == event.Type.ActivationChange:
+            if not self.isActiveWindow():
+                QApplication.quit()
+        super().changeEvent(event)
 
 
 if __name__ == "__main__":
