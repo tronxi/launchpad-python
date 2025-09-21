@@ -3,11 +3,6 @@
   "Chrome": ["Google Chrome"],
   "Whatsapp": ["WhatsApp"],
   "Apps": [],
-  "Games": [
-    "ares",
-    "Azahar",
-    "Ryujinx"
-  ],
   "Tools": [
     "Arduino IDE",
     "VLC",
@@ -28,14 +23,19 @@
     "CLion",
     "iCanHazShortcut"
   ],
+  "Games": [
+    "ares",
+    "Azahar",
+    "Ryujinx"
+  ],
+  "3D": [
+    "ElegooSlicer",
+    "Autodesk Fusion"
+  ],
   "iTerm": ["iTerm"],
   "IntelliJ IDEA": ["IntelliJ IDEA Ultimate"],
   "Visual Studio Code": ["Visual Studio Code"],
   "Docker": ["Docker"],
   "Bruno": ["Bruno"],
-  "DBeaver": ["DBeaver"],
-  "3D": [
-    "ElegooSlicer",
-    "Autodesk Fusion"
-  ]
+  "DBeaver": ["DBeaver"]
 }

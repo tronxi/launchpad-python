@@ -17,6 +17,7 @@ class Main(QScrollArea):
 
         self._searcher = AppSearcher()
         self._searcher.search()
+        self.cols = 7
 
         self.setWindowTitle("Launchpad")
         self._build_ui()
@@ -54,7 +55,7 @@ class Main(QScrollArea):
         self.search_bar.setPlaceholderText("Buscar aplicaciones...")
         self.search_bar.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.search_bar.setFocus()
-        self.frm.addWidget(self.search_bar, 0, 0, 1, 6,
+        self.frm.addWidget(self.search_bar, 0, 0, 1, self.cols,
                       alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignVCenter)
         self.frm.setContentsMargins(12, 12, 12, 12)
         self.frm.setHorizontalSpacing(12)
@@ -70,9 +71,8 @@ class Main(QScrollArea):
                 w = item.widget()
                 if w and not isinstance(w, QLineEdit):
                     w.setParent(None)
-        cols = 6
         for i, app in enumerate(apps):
-            r, c = divmod(i, cols)
+            r, c = divmod(i, self.cols)
             icon = app.draw()
 
             self.frm.addWidget(icon, r + 1, c, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
