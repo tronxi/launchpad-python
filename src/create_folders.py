@@ -5,6 +5,33 @@ from app_searcher import AppSearcher
 
 DB_PATH = "apps.db"
 
+class FolderCreator:
+
+    def create_structure_from_json(self, json_path):
+        AppSearcher().search()
+        with open(json_path, "r") as f:
+            data = json.load(f)
+
+        all_apps_from_json = set()
+        for apps in data.values():
+            for app in apps:
+                if not app.endswith(".app"):
+                    all_apps_from_json.add(app + ".app")
+                else:
+                    all_apps_from_json.add(app)
+
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.cursor()
+            cur.execute("select name from app")
+            all_apps_in_db = {row[0] for row in cur.fetchall()}
+
+            missing_apps = sorted(all_apps_in_db - all_apps_from_json)
+
+            for folder_name, apps in data.items():
+                if folder_name == "Apps":
+                    apps = apps + missing_apps
+                create_folder_with_apps(conn, folder_name, apps)
+
 def create_folder_with_apps(conn, folder_name, app_names):
     cur = conn.cursor()
     cur.execute("""
@@ -43,30 +70,7 @@ def create_folder_with_apps(conn, folder_name, app_names):
     conn.commit()
 
 
-def create_structure_from_json(json_path):
-    AppSearcher().search()
-    with open(json_path, "r") as f:
-        data = json.load(f)
 
-    all_apps_from_json = set()
-    for apps in data.values():
-        for app in apps:
-            if not app.endswith(".app"):
-                all_apps_from_json.add(app + ".app")
-            else:
-                all_apps_from_json.add(app)
-
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.cursor()
-        cur.execute("select name from app")
-        all_apps_in_db = {row[0] for row in cur.fetchall()}
-
-        missing_apps = sorted(all_apps_in_db - all_apps_from_json)
-
-        for folder_name, apps in data.items():
-            if folder_name == "Apps":
-                apps = apps + missing_apps
-            create_folder_with_apps(conn, folder_name, apps)
 
 
 if __name__ == "__main__":

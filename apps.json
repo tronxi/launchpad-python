@@ -1,7 +1,13 @@
 {
-  "Ajustes": ["System Settings"],
-  "Chrome": ["Google Chrome"],
-  "Whatsapp": ["WhatsApp"],
+  "Ajustes": [
+    "System Settings"
+  ],
+  "Chrome": [
+    "Google Chrome"
+  ],
+  "Whatsapp": [
+    "WhatsApp"
+  ],
   "Apps": [],
   "Tools": [
     "Arduino IDE",
@@ -32,10 +38,22 @@
     "ElegooSlicer",
     "Autodesk Fusion"
   ],
-  "iTerm": ["iTerm"],
-  "IntelliJ IDEA": ["IntelliJ IDEA Ultimate"],
-  "Visual Studio Code": ["Visual Studio Code"],
-  "Docker": ["Docker"],
-  "Bruno": ["Bruno"],
-  "DBeaver": ["DBeaver"]
+  "iTerm": [
+    "iTerm"
+  ],
+  "IntelliJ IDEA": [
+    "IntelliJ IDEA Ultimate"
+  ],
+  "Visual Studio Code": [
+    "Visual Studio Code"
+  ],
+  "Docker": [
+    "Docker"
+  ],
+  "Bruno": [
+    "Bruno"
+  ],
+  "DBeaver": [
+    "DBeaver"
+  ]
 }

@@ -1,8 +1,12 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLineEdit
+
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea, QLineEdit, QPushButton, QDialog
 from PyQt6.QtCore import Qt
 from app_searcher import AppSearcher
 from AppKit import NSWorkspace, NSScreen
+
+from settings_dialog import SettingsDialog
 
 
 def get_main_wallpaper_path():
@@ -50,13 +54,35 @@ class Main(QScrollArea):
         inner = QWidget()
         inner.setStyleSheet("background: transparent;")
         self.frm = QGridLayout(inner)
+
         self.search_bar = QLineEdit()
         self.search_bar.textChanged.connect(self._on_search_changed)
-        self.search_bar.setPlaceholderText("Buscar aplicaciones...")
+        self.search_bar.setPlaceholderText("Search...")
         self.search_bar.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.search_bar.setFocus()
-        self.frm.addWidget(self.search_bar, 0, 0, 1, self.cols,
-                      alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignVCenter)
+
+        self.settings_btn = QPushButton()
+        self.settings_btn.setText("⚙")
+        self.settings_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.settings_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #2b2b2b;
+                color: white;
+                font-size: 25px;
+                border: none;
+                border-radius: 8px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #3c3c3c;
+            }
+        """)
+        self.settings_btn.clicked.connect(self._open_settings)
+
+        self.frm.addWidget(self.settings_btn, 0, self.cols - 1)
+        self.frm.addWidget(self.search_bar, 0, 0, 1, self.cols - 1,
+                           alignment=Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignVCenter)
+
         self.frm.setContentsMargins(12, 12, 12, 12)
         self.frm.setHorizontalSpacing(12)
         self.frm.setVerticalSpacing(25)
@@ -69,7 +95,7 @@ class Main(QScrollArea):
             item = self.frm.itemAt(i)
             if item:
                 w = item.widget()
-                if w and not isinstance(w, QLineEdit):
+                if w and not isinstance(w, (QLineEdit, QPushButton)):
                     w.setParent(None)
         for i, app in enumerate(apps):
             r, c = divmod(i, self.cols)
@@ -93,13 +119,23 @@ class Main(QScrollArea):
         self.search_bar.setFocus()
         super().mousePressEvent(event)
 
-
     def changeEvent(self, event):
         if event.type() == event.Type.ActivationChange:
-            if not self.isActiveWindow():
+            active_window = QApplication.activeWindow()
+            if not self.isActiveWindow() and not isinstance(active_window, QDialog):
                 QApplication.quit()
         super().changeEvent(event)
 
+    def _open_settings(self):
+        dialog = SettingsDialog(self, on_close=self._refresh_apps)
+        dialog.setWindowIcon(
+            QIcon("assets/icons/settings.svg")
+        )
+        dialog.exec()
+
+    def _refresh_apps(self):
+        self.search_bar.setText("")
+        self._on_search_changed("")
 
 if __name__ == "__main__":
     application = QApplication(sys.argv)
