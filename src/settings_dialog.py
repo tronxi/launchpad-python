@@ -1,9 +1,11 @@
 import json
-
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QPushButton, QPlainTextEdit, QMessageBox
+from PyQt6.QtWidgets import (
+    QDialog, QVBoxLayout, QHBoxLayout, QPushButton,
+    QPlainTextEdit, QMessageBox, QListWidget, QListWidgetItem
+)
 from PyQt6.QtCore import Qt
-
 from create_folders import FolderCreator
+from app_searcher import AppSearcher
 
 
 class SettingsDialog(QDialog):
@@ -16,13 +18,21 @@ class SettingsDialog(QDialog):
         self.json_path = "apps.json"
         self._on_close = on_close
 
-        layout = QVBoxLayout(self)
+        main_layout = QVBoxLayout(self)
+
+        content_layout = QHBoxLayout()
         self.editor = QPlainTextEdit()
-        layout.addWidget(self.editor)
+        content_layout.addWidget(self.editor, stretch=2)
+
+        self.apps_list = QListWidget()
+        self._populate_apps_list()
+        content_layout.addWidget(self.apps_list, stretch=1)
+
+        main_layout.addLayout(content_layout)
 
         save_btn = QPushButton("Save")
         save_btn.clicked.connect(self.save_json)
-        layout.addWidget(save_btn)
+        main_layout.addWidget(save_btn)
 
         try:
             with open(self.json_path, "r", encoding="utf-8") as f:
@@ -45,7 +55,25 @@ class SettingsDialog(QDialog):
         QPushButton:hover {
             background-color: #3c3c3c;
         }
+        QPlainTextEdit {
+            background-color: #252526;
+            color: #dcdcdc;
+            font-family: monospace;
+        }
+        QListWidget {
+            background-color: #2b2b2b;
+            color: white;
+            border-radius: 6px;
+        }
         """)
+
+    def _populate_apps_list(self):
+        searcher = AppSearcher()
+        searcher.search()
+        self.apps_list.clear()
+        for app in sorted(searcher.get_apps(), key=lambda a: a.name.lower()):
+            item = QListWidgetItem(app.name[:-4])
+            self.apps_list.addItem(item)
 
     def save_json(self):
         text = self.editor.toPlainText()
